@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_sslcommerz/flutter_sslcommerz.dart';
+import 'package:flutter_sslcommerz/model/SSLCSdkType.dart';
+import 'package:flutter_sslcommerz/model/SSLCTransactionInfoModel.dart';
+import 'package:flutter_sslcommerz/model/SSLCommerzInitialization.dart';
+import 'package:flutter_sslcommerz/model/SSLCurrencyType.dart';
+import 'package:flutter_sslcommerz/sslcommerz.dart';
 
 void main() {
   runApp(const MyApp());
@@ -56,7 +62,17 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-
+  Sslcommerz sslcommerz = Sslcommerz(
+      initializer: SSLCommerzInitialization(
+        //  ipn_url: "www.ipnurl.com",
+          multi_card_name: "visa,master,bkash",
+          currency: SSLCurrencyType.BDT,
+          product_category: "Food",
+          sdkType: SSLCSdkType.TESTBOX,
+          store_id: "your store id",
+          store_passwd: "your store password",
+          total_amount: 100.00,
+          tran_id: "${DateTime.now()}"));
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -116,7 +132,10 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () async {
+
+          sslcommerz.payNow();
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
